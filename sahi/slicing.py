@@ -294,7 +294,7 @@ def slice_image(
     verboselog = logger.info if verbose else lambda *a, **k: None
 
     def _export_single_slice(image: np.ndarray, output_dir: str, slice_file_name: str):
-        image_pil = read_image_as_pil(image)
+        image_pil = read_image_as_pil([image])
         slice_file_path = str(Path(output_dir) / slice_file_name)
         # export sliced image
         image_pil.save(slice_file_path)
@@ -305,10 +305,10 @@ def slice_image(
         Path(output_dir).mkdir(parents=True, exist_ok=True)
 
     # read image
-    image_pil = read_image_as_pil(image)
-    verboselog("image.shape: " + str(image_pil.size))
+    image_pil = read_image_as_pil([image])
+    verboselog("image.shape: " + str(image_pil[0].size))
 
-    image_width, image_height = image_pil.size
+    image_width, image_height = image_pil[0].size
     if not (image_width != 0 and image_height != 0):
         raise RuntimeError(f"invalid image size: {image_pil.size} for 'slice_image'.")
     slice_bboxes = get_slice_bboxes(
@@ -327,7 +327,7 @@ def slice_image(
     # init images and annotations lists
     sliced_image_result = SliceImageResult(original_image_size=[image_height, image_width], image_dir=output_dir)
 
-    image_pil_arr = np.asarray(image_pil)
+    image_pil_arr = np.asarray(image_pil[0])
     # iterate over slices
     for slice_bbox in slice_bboxes:
         n_ims += 1

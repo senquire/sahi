@@ -169,7 +169,7 @@ class DetectionModel:
 
     @property
     def object_prediction_list(self):
-        return self._object_prediction_list_per_image[0]
+        return self._object_prediction_list
 
     @property
     def object_prediction_list_per_image(self):
@@ -279,6 +279,7 @@ class MmdetDetectionModel(DetectionModel):
         """
         original_predictions = self._original_predictions
         category_mapping = self.category_mapping
+        import pdb;pdb.set_trace()
 
         # compatilibty for sahi v0.8.15
         shift_amount_list = fix_shift_amount_list(shift_amount_list)
@@ -402,6 +403,7 @@ class Yolov5DetectionModel(DetectionModel):
         # Confirm model is loaded
         if self.model is None:
             raise ValueError("Model is not loaded, load it by calling .load_model()")
+        import pdb;pdb.set_trace()
         if self.image_size is not None:
             prediction_result = self.model(image, size=self.image_size)
         else:

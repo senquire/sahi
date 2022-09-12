@@ -193,6 +193,7 @@ def get_sliced_prediction(
     # currently only 1 batch supported
     num_batch = 1
 
+    import pdb;pdb.set_trace()
     # create slices from full image
     time_start = time.time()
     slice_image_result = slice_image(
@@ -228,6 +229,7 @@ def get_sliced_prediction(
         tqdm.write(f"Performing prediction on {num_slices} number of slices.")
     object_prediction_list = []
     # perform sliced prediction
+    #import pdb;pdb.set_trace()
     for group_ind in range(num_group):
         # prepare batch (currently supports only 1 batch)
         image_list = []
@@ -248,6 +250,8 @@ def get_sliced_prediction(
         # convert sliced predictions to full predictions
         for object_prediction in prediction_result.object_prediction_list:
             if object_prediction:  # if not empty
+                if not object_prediction.bbox.shift_amount == [0,0]: 
+                    import pdb;pdb.set_trace()
                 object_prediction_list.append(object_prediction.get_shifted_object_prediction())
 
         # merge matching predictions during sliced prediction

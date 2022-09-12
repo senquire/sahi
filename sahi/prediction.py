@@ -159,8 +159,8 @@ class PredictionResult:
         image: Union[Image.Image, str, np.ndarray],
         durations_in_seconds: Optional[Dict] = None,
     ):
-        self.image: Image.Image = read_image_as_pil(image)
-        self.image_width, self.image_height = self.image.size
+        self.image: List[Image.Image] = read_image_as_pil(image)
+        self.image_width, self.image_height = self.image[0].size
         self.object_prediction_list: List[ObjectPrediction] = object_prediction_list
         self.durations_in_seconds = durations_in_seconds
 
@@ -179,7 +179,7 @@ class PredictionResult:
         """
         Path(export_dir).mkdir(parents=True, exist_ok=True)
         visualize_object_predictions(
-            image=np.ascontiguousarray(self.image),
+            image=np.ascontiguousarray(self.image[0]),
             object_prediction_list=self.object_prediction_list,
             rect_th=rect_th,
             text_size=text_size,
